@@ -1,25 +1,38 @@
-#pragma once
+// Pose.h
+#ifndef POSE_H
+#define POSE_H
 
 class Pose {
-	double x;
-	double y;
-	double th;
+private:
+    double x;
+    double y;
+    double th;
 
 public:
-	double getX();
-	void setX(double);
-	double getY();
-	void setY(double);
-	double getTh();
-	void setTh(double);
-	bool operator==(const Pose&);
-	Pose operator+(const Pose&);
-	Pose operator-(const Pose&);
-	Pose& operator+=(const Pose&);
-	Pose& operator-=(const Pose&);
-	bool operator<(const Pose&);
-	void getPose(double&, double&, double&);
-	void setPose(double, double, double);
-	double findDistanceTo(Pose);
-	double findAngleTo(Pose);
+    Pose();
+    Pose(double _x, double _y, double _th);
+
+    double getX() const;
+    void setX(double _x);
+
+    double getY() const;
+    void setY(double _y);
+
+    double getTh() const;
+    void setTh(double _th);
+
+    bool operator==(const Pose& other) const;
+    Pose operator+(const Pose& other) const;
+    Pose operator-(const Pose& other) const;
+    Pose& operator+=(const Pose& other);
+    Pose& operator-=(const Pose& other);
+    bool operator<(const Pose& other) const;
+
+    void getPose(double& _x, double& _y, double& _th) const;
+    void setPose(double _x, double _y, double _th);
+
+    double findDistanceTo(const Pose& pos) const;
+    double findAngleTo(const Pose& pos) const;
 };
+
+#endif // POSE_H
