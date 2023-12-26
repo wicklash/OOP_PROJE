@@ -1,0 +1,9 @@
+class:SonarSensor
+-ranges:double[2]
+-robotAPI:NAORobotAPI*
+
++getRange(index: int):double
++getMax(index: int&):double
++getMin(index:int&):double
++updateSensor(ranges:double[]):void
++operator(i:int)[]
