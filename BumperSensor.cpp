@@ -11,9 +11,13 @@ BumperSensor::BumperSensor(NaoRobotAPI* api) {
 
 // Update sensor states with the given array
 void BumperSensor::updateSensor(bool newStates[]) {
-    for (int i = 0; i < 4; ++i) {
-        states[i] = newStates[i];
-    }
+    bool leftFoot_left, leftFoot_right, rightFoot_left, rightFoot_right;
+    robotAPI->getFootBumpers(leftFoot_left, leftFoot_right, rightFoot_left, rightFoot_right);
+    newStates[0] = leftFoot_left;
+    newStates[1] = leftFoot_right;
+    newStates[2] = rightFoot_left;
+    newStates[3] = rightFoot_right;
+   
 }
 
 // Get the state of the sensor at the specified index
