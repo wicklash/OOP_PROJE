@@ -1,144 +1,148 @@
 #include "Path.h"
 using namespace std;
 
-Path::Path() {
-	head = tail = NULL;
-	number = 0;
+Path::Path() : tail(nullptr), head(nullptr), number(0) {}
+
+Path::~Path() {
+    delete head;
 }
 
-void Path::addPos(Pose pos) {
-	if (head == NULL) {
-		head->pose = pos;
-		tail = head;
-		number++;
-	}
+void Path::addPos(const Pose& pose) {
+    Node* newNode = new Node();
+    newNode->pose = pose;
 
-	else {
-		Node* node = new Node();
-		node->pose = pos;
-		tail->next = node;
-		number++;
-	}
+    if (!head) {
+        head = newNode;
+        tail = newNode;
+    }
+    else {
+        tail->next = newNode;
+        tail = newNode;
+    }
+
+    number++;
 }
 
-void Path::print() {
-	Node* temp = head;
-	for (int i = 1; i < (number + 1); i++) {
-		cout << i << ". Pose's X value is: " << temp->pose.getX() << endl;
-		cout << i << ". Pose's Y value is: " << temp->pose.getY() << endl;
-		cout << i << ". Pose's Angle value is: " << temp->pose.getTh() << endl;
-		temp = temp->next;
-	}
+void Path::print() const {
+    Node* current = head;
+    while (current) {
+        cout << "X: " << current->pose.getX() << ", Y: " << current->pose.getY()
+            << ", Th: " << current->pose.getTh() << " " << endl;
+        current = current->next;
+    }
+    cout << endl;
 }
 
-Pose Path::operator[](int index) {
-	Node* node = new Node();
-
-	if (index >= number && index < 0) {
-		cout << "Index is invalid!" << endl;
-		return node->pose;
-	}
-
-	else {
-		node = head;
-
-		while (index > 0) {
-			node = node->next;
-			index--;
-		}
-
-		return node->pose;
-	}
+Pose Path::operator[](int index) const {
+    Node* current = head;
+    int i = 0;
+    while (current) {
+        if (i == index) {
+            return current->pose;
+        }
+        current = current->next;
+        i++;
+    }
+    return Pose(0, 0, 0);
 }
 
-Pose Path::getPos(int index) {
-	Node* node = new Node();
-
-	if (index >= number && index < 0) {
-		cout << "Index is invalid!" << endl;
-		return node->pose;
-	}
-
-	else {
-		node = head;
-
-		while (index > 0) {
-			node = node->next;
-			index--;
-		}
-
-		return node->pose;
-	}
+Pose Path::getPos(int index) const {
+    return (*this)[index];
 }
 
 bool Path::removePos(int index) {
-	if (index >= number || index < 0) { return false; }
+    if (index < 0 || index >= number) {
+        return false;
+    }
 
-	else if (index == 0) { 
-		head = head->next; 
-		return true;
-	}
+    if (index == 0) {
+        Node* temp = head;
+        head = head->next;
+        temp->next = nullptr;
+        delete temp;
+        number--;
+        return true;
+    }
 
-	else {
-		Node* p = head;
-		Node* q = NULL;
+    Node* current = head;
+    for (int i = 0; i < index - 1; ++i) {
+        current = current->next;
+    }
 
-		int tempIndex = index;
+    Node* temp = current->next;
+    current->next = temp->next;
+    temp->next = nullptr;
+    delete temp;
+    number--;
 
-		while (tempIndex > 0) {
-			q = p;
-			p = p->next;
-			tempIndex--;
-		}
+    if (index == number - 1) {
+        tail = current;
+    }
 
-		q = p->next;
-		if (index == number - 1) { tail = q; }
-		return true;
-	}
+    return true;
 }
 
-bool Path::insertPos(int index, Pose pos) {
-	Node* node = new Node();
-	node->pose = pos;
-	if (index < 0 || index > (number + 1)) { 
-		cout << "Index is invalid!" << endl;
-		return false; 
-	}
+void Path::insertPos(int index, const Pose& pose) {
+    if (index < 0 || index > number) {
+        return;
+    }
 
-	else {
-		Node* p = head;
-		Node* q = new Node();
-		
-		while (index > 0) {
-			q = p;
-			p = p->next;
-			index++;
-		}
+    Node* newNode = new Node();
+    newNode->pose = pose;
 
-		node->next = q->next;
-		q->next = node;
+    if (index == number) {
+        if (!head) {
+            // The list is empty, set head and tail to the new node
+            head = newNode;
+            tail = newNode;
+        }
+        else {
+            // The list is non-empty, add the new node to the end
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+    else {
+        Node* current = head;
+        for (int i = 0; i < index; ++i) {
+            current = current->next;
+        }
 
-		if (p == NULL) { tail = node; }
-		else if (q == NULL) { head = node; }
+        newNode->next = current->next;
+        current->next = newNode;
 
-		return true;
-	}
+        // Check if the new node is added at the end
+        if (index == number - 1) {
+            tail = newNode;
+        }
+    }
+
+    number++;
 }
 
-// operator overloading
-#if 0
-ostream& operator<<(ostream& out, Pose pos) {
-	Node* temp = pos.;
-	for (int i = 1; i < (number + 1); i++) {
-		out << i << ". Pose's X value is: " << temp->pose.getX() << endl;
-		out << i << ". Pose's Y value is: " << temp->pose.getY() << endl;
-		out << i << ". Pose's Angle value is: " << temp->pose.getTh() << endl;
-		temp = temp->next;
-	}
-	return out;
-}
-istream& operator>>(istream& in, Pose pos) {
 
-	return in;
+
+ostream& operator<<(ostream& out, const Path& path) {
+    Path::Node* current = path.head;
+    while (current) {
+        out << "X: " << current->pose.getX() << ", Y: " << current->pose.getY()
+            << ", Th: " << current->pose.getTh() << " " << endl;
+        current = current->next;
+    }
+    out << endl;
+    return out;
 }
-#endif
+
+istream& operator>>(istream& in, Path& path) {
+    double x, y, th;
+    cout << "Enter X coordinate for new pose: ";
+    in >> x;
+    cout << "Enter Y coordinate for new pose: ";
+    in >> y;
+    cout << "Enter Th value for new pose: ";
+    in >> th;
+
+    Pose pose(x, y, th);
+    path.addPos(pose);
+    return in;
+}
