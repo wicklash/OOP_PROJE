@@ -28,7 +28,7 @@ int Encryption::decrypt(int code) {
     int digit4 = (code % 10 + 3) % 10;
 
     // Swap digits back to the original order
-    int decryptedCode = digit1 * 1000 + digit2 * 100 + digit3 * 10 + digit4;
+    int decryptedCode = digit3 * 1000 + digit4 * 100 + digit1 * 10 + digit2;
 
     return decryptedCode;
 }
