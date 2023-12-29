@@ -1,4 +1,3 @@
-#pragma once
 #ifndef RECORD_H
 #define RECORD_H
 #include <fstream>
@@ -10,6 +9,7 @@ private:
     std::fstream file;
 
 public:
+
 
     Record(const std::string& name);  // Constructor to set the file name
     ~Record();
