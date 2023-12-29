@@ -4,11 +4,12 @@
 #include "NaoRobotAPI.h"
 
 class RobotControl {
-	Pose* position;
+	Pose* position = new Pose();
 	NaoRobotAPI* robotAPI;
 	int state;
 
 public:
+	RobotControl(NaoRobotAPI* api);
 	~RobotControl();
 	void turnLeft();
 	void turnRight();
@@ -19,4 +20,5 @@ public:
 	void stop();
 	Pose* getPose();
 	void print();
+	void connectRobot();
 };

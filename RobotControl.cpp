@@ -1,37 +1,48 @@
 #include "RobotControl.h"
+#include <iostream>
+using namespace std;
+
+RobotControl::RobotControl(NaoRobotAPI* api) : robotAPI(api) {}
 
 RobotControl::~RobotControl() { delete position; }
 
 void RobotControl::turnLeft() { 
-	robotAPI->moveRobot(LEFT);
-	position->setPose(robotAPI->getX(), robotAPI->getY(), robotAPI->getTh());
+	robotAPI->turnRobot(LEFT);
 }
 
 void RobotControl::turnRight() { 
-	robotAPI->moveRobot(RIGHT); 
-	position->setPose(robotAPI->getX(), robotAPI->getY(), robotAPI->getTh());
+	robotAPI->turnRobot(RIGHT);
 }
 
 void RobotControl::forward() { 
 	robotAPI->moveRobot(FORWARD);
-	position->setPose(robotAPI->getX(), robotAPI->getY(), robotAPI->getTh());
 }
 
 void RobotControl::backward() {
 	robotAPI->moveRobot(BACKWARD); 
-	position->setPose(robotAPI->getX(), robotAPI->getY(), robotAPI->getTh());
 }
 
 void RobotControl::moveLeft() { 
-	robotAPI->turnRobot(LEFT); 
-	position->setPose(robotAPI->getX(), robotAPI->getY(), robotAPI->getTh());
+	robotAPI->moveRobot(LEFT);
 }
 
 void RobotControl::moveRight() { 
-	robotAPI->turnRobot(RIGHT); 
+	robotAPI->moveRobot(RIGHT);
+}
+
+void RobotControl::stop() { 
+	robotAPI->stopRobot(); 
 	position->setPose(robotAPI->getX(), robotAPI->getY(), robotAPI->getTh());
 }
 
-void RobotControl::stop() { robotAPI->stopRobot(); }
-
 Pose* RobotControl::getPose() { return position; }
+
+void RobotControl::connectRobot() {
+	robotAPI->connect();
+}
+
+void RobotControl::print() {
+	cout << "X value is: " << position->getX() << "; ";
+	cout << "Y value is: " << position->getY() << "; ";
+	cout << "Angle is: " << position->getTh() << endl;
+}
