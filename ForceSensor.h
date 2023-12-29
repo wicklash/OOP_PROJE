@@ -10,10 +10,10 @@ private:
 
 public:
     // Kurucu fonksiyon
-    ForceSensor(NaoRobotAPI* api);
+    ForceSensor(NaoRobotAPI* robotAPI);
 
     // Sensörü günceller
-    void updateSensor(double force);
+    void updateSensor();
 
     // Sensörden kuvvet deðerini alýr
     double getForce();

@@ -1,8 +1,7 @@
 // SonarSensor.cpp
 #include "SonarSensor.h"
-#include "NaoRobotAPI.h" // Include the actual header for NaoRobotAPI
 
-SonarSensor::SonarSensor(NaoRobotAPI* _robotAPI) : robotAPI(_robotAPI) {
+SonarSensor::SonarSensor(NaoRobotAPI* api) : robotAPI(api) {
     ranges[0] = 0.0;
     ranges[1] = 0.0;
 }
@@ -26,7 +25,7 @@ double SonarSensor::getMin(int& index) const {
     return ranges[index];
 }
 
-void SonarSensor::updateSensor(double newRanges[]) {
+void SonarSensor::updateSensor() {
     double left, right;
     robotAPI->getSonarRange(left, right);
     ranges[0] = left;

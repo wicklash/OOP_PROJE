@@ -1,10 +1,10 @@
 #include "ForceSensor.h"
 
 // Constructor
-ForceSensor::ForceSensor(NaoRobotAPI* api) : robotAPI(api), force(0.0) {}
+ForceSensor::ForceSensor(NaoRobotAPI* api) : robotAPI(api) , force(0.0) {}
 
 // Updates the sensor with the current force value
-void ForceSensor::updateSensor(double force) {
+void ForceSensor::updateSensor() {
     this->force = robotAPI->getFootForce();
 }
 
@@ -18,7 +18,7 @@ bool ForceSensor::checkFall() {
     // Assuming a threshold value for detecting a fall, adjust as needed
 
     //SAYI DEÐÝÞTÝRÝLECEK!
-    const double fallThreshold = 10.0;
+    const double fallThreshold = 1.5;
 
     // Get the total force at the bottom of the foot from the robot API
     double totalFootForce = robotAPI->getFootForce();
