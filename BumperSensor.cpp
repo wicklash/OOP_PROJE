@@ -1,22 +1,20 @@
 #include "BumperSensor.h"
 
 // Constructor
-BumperSensor::BumperSensor(NaoRobotAPI* api) {
-    robotAPI = api;
-    // Initialize states to false
+BumperSensor::BumperSensor(NaoRobotAPI* api) : robotAPI(api) {
     for (int i = 0; i < 4; ++i) {
         states[i] = false;
     }
 }
 
 // Update sensor states with the given array
-void BumperSensor::updateSensor(bool newStates[]) {
+void BumperSensor::updateSensor() {
     bool leftFoot_left, leftFoot_right, rightFoot_left, rightFoot_right;
     robotAPI->getFootBumpers(leftFoot_left, leftFoot_right, rightFoot_left, rightFoot_right);
-    newStates[0] = leftFoot_left;
-    newStates[1] = leftFoot_right;
-    newStates[2] = rightFoot_left;
-    newStates[3] = rightFoot_right;
+    states[0] = leftFoot_left;
+    states[1] = leftFoot_right;
+    states[2] = rightFoot_left;
+    states[3] = rightFoot_right;
    
 }
 
@@ -31,7 +29,6 @@ bool BumperSensor::getState(int index) {
     }
 }
 
-// Check if any of the sensors is touched
 bool BumperSensor::checkTouch() {
     for (int i = 0; i < 4; ++i) {
         if (states[i]) {
