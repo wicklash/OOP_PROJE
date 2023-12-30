@@ -1,33 +1,33 @@
 #include "Record.h"
 #include <iostream>
-
+using namespace std;
 int main() {
 
-    // Test 1: Create a Record object
+    //! Test 1: Create a Record object
     Record myRecord("test.txt");
 
-    // Test 2: Open the file
+    //! Test 2: Open the file
     if (myRecord.openFile()) {
-        std::cout << "File opened successfully." << std::endl;
+        cout << "File opened successfully." << endl;
 
-        // Test 3: Read lines from the file
-        std::string line1, line2;
+        //! Test 3: Read lines from the file
+        string line1, line2;
         myRecord >> line1 >> line2;
 
-        std::cout << "Line 1: " << line1 << std::endl;
-        std::cout << "Line 2: " << line2 << std::endl;
+        cout << "Line 1: " << line1 << endl;
+        cout << "Line 2: " << line2 << endl;
 
-        // Test 4: Close the file
+        //! Test 4: Close the file
         if (myRecord.closeFile()) {
-            std::cout << "File closed successfully." << std::endl;
+            cout << "File closed successfully." << endl;
         }
         else {
-            std::cerr << "Error: Unable to close the file." << std::endl;
+            cerr << "Error: Unable to close the file." << endl;
             return 1;
         }
     }
     else {
-        std::cerr << "Error: Unable to open the file." << std::endl;
+        cerr << "Error: Unable to open the file." << endl;
         return 1;
     }
 
